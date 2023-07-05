@@ -1,5 +1,7 @@
 import BirthInput from "Components/BirthInput";
+import GeoLocation from "Components/GeoLocation";
 import NameInput from "Components/NameInput";
+
 import { ChangeEvent, useState } from "react";
 
 function NameSpace() {
@@ -28,7 +30,7 @@ function NameSpace() {
           placeholder="이름"
         />
       )}
-      {nameSubmit && (
+      {nameSubmit && !birthSubmit && (
         <BirthInput
           setName={setName}
           setBirth={setBirth}
@@ -39,6 +41,8 @@ function NameSpace() {
           placeholder="생년월일"
         />
       )}
+
+      {birthSubmit && <GeoLocation />}
     </>
   );
 }
