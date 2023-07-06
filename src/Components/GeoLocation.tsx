@@ -1,3 +1,4 @@
+import { useGetWeather } from "api/weatherAPI";
 import { MouseEvent, useEffect, useState } from "react";
 import Button from "./Atoms/Button";
 
@@ -7,7 +8,12 @@ interface myLocation {
 }
 
 function GeoLocation() {
-  const [location, setLocation] = useState<myLocation>();
+  const [location, setLocation] = useState<myLocation>({
+    lat: 0,
+    long: 0,
+  });
+
+  const data = useGetWeather(location);
   const [isMyLocationDetectConfirmed, setIsMyLocationDetectConfirmed] =
     useState("");
 
@@ -27,27 +33,43 @@ function GeoLocation() {
   };
 
   const error = () => {
-    setLocation({ lat: 37, long: 100 });
+    setLocation({ lat: 30, long: 100 });
     alert("으악! 에러가 났어요!!!");
     return;
   };
 
   useEffect(() => {
     const { geolocation } = navigator;
+    if (!!location.lat && !!location.long) return;
 
     if (isMyLocationDetectConfirmed === "customLocation") {
       geolocation.getCurrentPosition(success, error);
       localStorage.setItem("location", JSON.stringify(location));
     } else {
-      localStorage.setItem("location", JSON.stringify(location));
+      localStorage.setItem("location", JSON.stringify({ lat: 30, long: 127 }));
     }
   }, [isMyLocationDetectConfirmed, location]);
+
+  // useEffect(() => {
+  //   if (!location) return;
+  // }, [location]);
 
   return (
     <>
       <div>위치 정보 받아올꺼야?</div>
       <Button onClick={onGetMyCurrentLocation}>어</Button>
       <Button onClick={onGetDefaultLocation}>ㄴ</Button>
+
+      {data &&
+        data.map(
+          (e) =>
+            e.category === ("TMP" || "SKY") && (
+              <>
+                <div>{e.category}</div>
+                <div>{e.fcstValue}</div>
+              </>
+            )
+        )}
     </>
   );
 }
