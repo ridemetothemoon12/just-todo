@@ -1,13 +1,22 @@
 import { useGetWeather } from "api/weatherAPI";
-import { MouseEvent, useEffect, useState } from "react";
+import {
+  Dispatch,
+  MouseEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import Button from "./Atoms/Button";
 
+type Props = {
+  setLocationSubmit: Dispatch<SetStateAction<boolean>>;
+};
 interface myLocation {
   lat: number;
   long: number;
 }
 
-function GeoLocation() {
+function GeoLocation({ setLocationSubmit }: Props) {
   const [location, setLocation] = useState<myLocation>({
     lat: 0,
     long: 0,
@@ -20,10 +29,12 @@ function GeoLocation() {
   const onGetMyCurrentLocation = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsMyLocationDetectConfirmed("customLocation");
+    setLocationSubmit(true);
   };
   const onGetDefaultLocation = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsMyLocationDetectConfirmed("defaultLocation");
+    setLocationSubmit(true);
   };
 
   const success = (pos: GeolocationPosition) => {

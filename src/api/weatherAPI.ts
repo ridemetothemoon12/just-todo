@@ -30,7 +30,7 @@ type ResponseType = {
 
 const getWeather = ({ lat, long }: { lat: number; long: number }) => {
   const response = axios.get<ResponseType>(
-    `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=4zRpacCNHt6p8hFytVyzh7zl+lUhKjVVoSC+UnGE1H/Do4PeFdLPYqasc8tzhkLn6Bg0xIm/Acpqa1nL6Pqrfw==&pageNo=1&numOfRows=10&dataType=JSON&base_date=20230706&base_time=0500&nx=${lat}&ny=${long}`
+    `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=4zRpacCNHt6p8hFytVyzh7zl%2BlUhKjVVoSC%2BUnGE1H%2FDo4PeFdLPYqasc8tzhkLn6Bg0xIm%2FAcpqa1nL6Pqrfw%3D%3D&pageNo=1&numOfRows=10&dataType=JSON&base_date=20230706&base_time=0500&nx=${lat}&ny=${long}`
   );
   return response;
 };
@@ -42,5 +42,5 @@ export const useGetWeather = ({ lat, long }: { lat: number; long: number }) => {
     enabled: !!lat && !!long,
   });
 
-  return response.data?.data.response.body.items.item ?? [];
+  return response.data?.data?.response?.body?.items?.item ?? [];
 };
